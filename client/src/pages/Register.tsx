@@ -54,16 +54,16 @@ export default function Register() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 px-4 py-8">
       <Card className="w-full max-w-md">
-        <CardHeader className="space-y-2 text-center">
-          <CardTitle className="text-3xl font-bold">Create Account</CardTitle>
-          <CardDescription>Register as a dining manager</CardDescription>
+        <CardHeader className="space-y-2 text-center px-4 sm:px-6">
+          <CardTitle className="text-2xl sm:text-3xl font-bold">Create Account</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">Register as a dining manager</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-4 sm:px-6">
           <form onSubmit={handleRegister} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
+              <Label htmlFor="name" className="text-xs sm:text-sm">Full Name</Label>
               <Input
                 id="name"
                 type="text"
@@ -73,11 +73,12 @@ export default function Register() {
                 required
                 disabled={loading}
                 autoComplete="name"
+                className="text-sm"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-xs sm:text-sm">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -87,11 +88,12 @@ export default function Register() {
                 required
                 disabled={loading}
                 autoComplete="email"
+                className="text-sm"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-xs sm:text-sm">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -101,11 +103,12 @@ export default function Register() {
                 required
                 disabled={loading}
                 autoComplete="new-password"
+                className="text-sm"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone (Optional)</Label>
+              <Label htmlFor="phone" className="text-xs sm:text-sm">Phone (Optional)</Label>
               <Input
                 id="phone"
                 type="tel"
@@ -114,6 +117,7 @@ export default function Register() {
                 onChange={(e) => setPhone(e.target.value)}
                 disabled={loading}
                 autoComplete="tel"
+                className="text-sm"
               />
             </div>
 
@@ -127,7 +131,7 @@ export default function Register() {
             </Button>
           </form>
 
-          <div className="mt-6 text-center text-sm">
+          <div className="mt-6 text-center text-xs sm:text-sm">
             <p className="text-slate-600">
               Already have an account?{' '}
               <Link

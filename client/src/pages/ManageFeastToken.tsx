@@ -214,11 +214,11 @@ export default function ManageFeastToken() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Manage Students</h1>
+      <div className="px-2 sm:px-0">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Manage Students</h1>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 px-2 sm:px-0">
         <Input
           placeholder="Search by name or ID..."
           value={searchTerm}
@@ -226,7 +226,7 @@ export default function ManageFeastToken() {
             setSearchTerm(e.target.value)
             setCurrentPage(1)
           }}
-          className="max-w-sm"
+          className="w-full max-w-sm text-sm"
         />
       </div>
 
@@ -236,10 +236,10 @@ export default function ManageFeastToken() {
             <EmptyMedia variant="icon">
               <Users className="h-6 w-6" />
             </EmptyMedia>
-            <EmptyTitle>No students found</EmptyTitle>
+            <EmptyTitle className="text-lg sm:text-xl">No students found</EmptyTitle>
           </EmptyHeader>
           <EmptyContent>
-            <EmptyDescription>
+            <EmptyDescription className="text-sm">
               {searchTerm
                 ? 'Try adjusting your search criteria'
                 : 'No students available for this month'}
@@ -248,29 +248,29 @@ export default function ManageFeastToken() {
         </Empty>
       ) : (
         <>
-          <div>
-            <p className="text-sm text-muted-foreground mb-4">
+          <div className="px-2 sm:px-0">
+            <p className="text-xs sm:text-sm text-muted-foreground mb-4">
               Viewing {startIndex}-{endIndex} of {filteredStudents.length} students
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               {paginatedStudents.map((student) => (
                 <Card
                   key={student._id}
                   className="cursor-pointer hover:shadow-lg transition-shadow"
                 >
                   <CardHeader>
-                    <CardTitle className="text-lg">{student.name}</CardTitle>
-                    <p className="text-sm text-muted-foreground">{student.id}</p>
+                    <CardTitle className="text-base sm:text-lg">{student.name}</CardTitle>
+                    <p className="text-xs sm:text-sm text-muted-foreground">{student.id}</p>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Days</span>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-xs sm:text-sm text-muted-foreground">Days</span>
                       <span className="font-semibold">{student.selectedDaysCount}</span>
                     </div>
 
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Payment</span>
-                      <Badge
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-xs sm:text-sm text-muted-foreground">Payment</span>
+                      <Badge className="text-xs"
                         variant={
                           student.dueAmount === 0 && student.totalAmount > 0
                             ? 'default'
@@ -283,18 +283,18 @@ export default function ManageFeastToken() {
                       </Badge>
                     </div>
 
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Feast</span>
-                      <Badge
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-xs sm:text-sm text-muted-foreground">Feast</span>
+                      <Badge className="text-xs"
                         variant={student.feastpaid ? 'default' : 'destructive'}
                       >
                         {student.feastpaid ? 'Paid' : 'Due 100'}
                       </Badge>
                     </div>
 
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Daily Quota</span>
-                      <Badge
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-xs sm:text-sm text-muted-foreground">Daily Quota</span>
+                      <Badge className="text-xs"
                         variant={
                           student.dailyFeastQuotaPaid ? 'default' : 'destructive'
                         }
@@ -305,7 +305,7 @@ export default function ManageFeastToken() {
 
                     <Button
                       onClick={() => setSelectedStudent(student)}
-                      className="w-full mt-4"
+                      className="w-full mt-4 text-sm"
                       variant="outline"
                     >
                       View Details
@@ -317,7 +317,7 @@ export default function ManageFeastToken() {
           </div>
 
           {totalPages > 1 && (
-            <div className="flex justify-center">
+            <div className="flex justify-center px-2 sm:px-0">
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>
@@ -336,7 +336,7 @@ export default function ManageFeastToken() {
                         <PaginationLink
                           isActive={currentPage === page}
                           onClick={() => setCurrentPage(page)}
-                          className="cursor-pointer"
+                          className="cursor-pointer text-xs sm:text-sm"
                         >
                           {page}
                         </PaginationLink>
@@ -368,32 +368,32 @@ export default function ManageFeastToken() {
           if (!open) setSelectedStudent(null)
         }}
       >
-        <DrawerContent className='flex items-center justify-center '>
-          <div className='w-[70%] max-h-[80vh] overflow-y-auto scrollbar-hide'>
-            <DrawerHeader>
-              <DrawerTitle>{selectedStudent?.name}</DrawerTitle>
+        <DrawerContent className='flex items-center justify-center p-0 sm:p-4'>
+          <div className='w-full sm:w-[90%] md:w-[80%] lg:w-[70%] max-h-[80vh] overflow-y-auto scrollbar-hide'>
+            <DrawerHeader className="px-4 sm:px-6">
+              <DrawerTitle className="text-lg sm:text-xl">{selectedStudent?.name}</DrawerTitle>
               <DrawerClose />
             </DrawerHeader>
 
-            <div className="space-y-6 px-4 pb-4">
+            <div className="space-y-6 px-4 sm:px-6 pb-4">
             {/* Student Information */}
             <div className="space-y-3">
-              <h3 className="font-semibold">Student Information</h3>
-              <div className="grid grid-cols-2 gap-4 text-sm">
+              <h3 className="font-semibold text-sm sm:text-base">Student Information</h3>
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 text-xs sm:text-sm">
                 <div>
-                  <p className="text-muted-foreground">ID</p>
+                  <p className="text-muted-foreground text-xs">ID</p>
                   <p className="font-medium">{selectedStudent?.id}</p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground">Phone</p>
+                  <p className="text-muted-foreground text-xs">Phone</p>
                   <p className="font-medium">{selectedStudent?.phone}</p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground">Room</p>
+                  <p className="text-muted-foreground text-xs">Room</p>
                   <p className="font-medium">{selectedStudent?.roomNo}</p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground">Selected Days</p>
+                  <p className="text-muted-foreground text-xs">Selected Days</p>
                   <p className="font-medium">{selectedStudent?.selectedDaysCount}</p>
                 </div>
               </div>
@@ -402,8 +402,8 @@ export default function ManageFeastToken() {
             {/* Feast Status */}
             <div className="border-t pt-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Feast Status</span>
-                <Badge
+                <span className="text-xs sm:text-sm text-muted-foreground">Feast Status</span>
+                <Badge className="text-xs"
                   variant={selectedStudent?.feastpaid ? 'default' : 'destructive'}
                 >
                   {selectedStudent?.feastpaid ? 'Paid' : 'Due - 100 TK'}
@@ -415,9 +415,9 @@ export default function ManageFeastToken() {
             {selectedStudent?.transactions &&
               selectedStudent.transactions.length > 0 && (
                 <div className="space-y-3">
-                  <h3 className="font-semibold">Transaction History</h3>
-                  <div className="border rounded-lg overflow-hidden">
-                    <Table>
+                  <h3 className="font-semibold text-sm sm:text-base">Transaction History</h3>
+                  <div className="border rounded-lg overflow-x-auto">
+                    <Table className="text-xs">
                       <TableHeader>
                         <TableRow>
                           <TableHead className="text-xs">Date</TableHead>
@@ -428,7 +428,7 @@ export default function ManageFeastToken() {
                       </TableHeader>
                       <TableBody>
                         {selectedStudent.transactions.map((transaction, idx) => (
-                          <TableRow key={idx}>
+                          <TableRow key={idx} className="text-xs">
                             <TableCell className="text-xs">
                               {new Date(transaction.date).toLocaleDateString()}
                             </TableCell>
@@ -443,7 +443,7 @@ export default function ManageFeastToken() {
                             </TableCell>
                           </TableRow>
                         ))}
-                        <TableRow className="bg-muted font-semibold">
+                        <TableRow className="bg-muted font-semibold text-xs">
                           <TableCell className="text-xs">Total</TableCell>
                           <TableCell className="text-xs">
                             {selectedStudent.transactions.reduce(
@@ -476,30 +476,31 @@ export default function ManageFeastToken() {
             selectedStudent.dailyFeastQuotaPaid &&
             selectedStudent.dueAmount === 0 ? (
               <Alert>
-                <AlertDescription className="text-center font-semibold text-green-400">
+                <AlertDescription className="text-center font-semibold text-green-400 text-xs sm:text-sm">
                   ✓ All dues clear. Enjoy the feast!
                 </AlertDescription>
               </Alert>
             ) : (
               <>
-                <div className="space-y-3 flex space-x-10 justify-center">
+                <div className="space-y-3 flex flex-col sm:flex-row sm:space-x-4 sm:space-y-0 justify-center">
                   {selectedStudent && selectedStudent.dueAmount !== 0 && (
-                    <Card>
-                      <CardContent className="pt-6 space-y-3">
+                    <Card className="flex-1 text-sm">
+                      <CardContent className="pt-4 sm:pt-6 space-y-3">
                         <div>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-xs sm:text-sm text-muted-foreground">
                             {selectedStudent.dueAmount < 0
                               ? 'Refund Due'
                               : 'Payment Due'}
                           </p>
-                          <p className="text-xl font-bold">
+                          <p className="text-lg sm:text-xl font-bold">
                             {Math.abs(selectedStudent.dueAmount)} TK
                           </p>
                         </div>
                         <Button
                           onClick={handleClearPaymentDue}
                           disabled={clearPaymentLoading}
-                          className="w-full"
+                          className="w-full text-xs sm:text-sm"
+                          size="sm"
                         >
                           {clearPaymentLoading
                             ? 'Processing...'
@@ -512,16 +513,17 @@ export default function ManageFeastToken() {
                   )}
 
                   {selectedStudent && !selectedStudent.feastpaid && (
-                    <Card>
-                      <CardContent className="pt-6 space-y-3">
+                    <Card className="flex-1 text-sm">
+                      <CardContent className="pt-4 sm:pt-6 space-y-3">
                         <div>
-                          <p className="text-sm text-muted-foreground">Feast Due</p>
-                          <p className="text-xl font-bold">100 TK</p>
+                          <p className="text-xs sm:text-sm text-muted-foreground">Feast Due</p>
+                          <p className="text-lg sm:text-xl font-bold">100 TK</p>
                         </div>
                         <Button
                           onClick={handlePayFeast}
                           disabled={feastLoading}
-                          className="w-full"
+                          className="w-full text-xs sm:text-sm"
+                          size="sm"
                         >
                           {feastLoading ? 'Processing...' : 'Pay Feast Due'}
                         </Button>
@@ -530,13 +532,13 @@ export default function ManageFeastToken() {
                   )}
 
                   {selectedStudent && !selectedStudent.dailyFeastQuotaPaid && (
-                    <Card>
-                      <CardContent className="pt-6 space-y-3">
+                    <Card className="flex-1 text-sm">
+                      <CardContent className="pt-4 sm:pt-6 space-y-3">
                         <div>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-xs sm:text-sm text-muted-foreground">
                             Daily Feast Quota Due
                           </p>
-                          <p className="text-xl font-bold">
+                          <p className="text-lg sm:text-xl font-bold">
                             {calculateDailyFeastQuota(selectedStudent)} TK
                           </p>
                           <p className="text-xs text-muted-foreground mt-2">
@@ -552,7 +554,8 @@ export default function ManageFeastToken() {
                         <Button
                           onClick={handlePayDailyFeastQuota}
                           disabled={dailyFeastQuotaLoading}
-                          className="w-full"
+                          className="w-full text-xs sm:text-sm"
+                          size="sm"
                         >
                           {dailyFeastQuotaLoading
                             ? 'Processing...'
@@ -571,7 +574,7 @@ export default function ManageFeastToken() {
                       onClick={handleClearAll}
                       disabled={feastLoading}
                       size="lg"
-                      className="w-full"
+                      className="w-full text-sm"
                     >
                       {feastLoading ? 'Processing...' : 'Clear All'}
                     </Button>

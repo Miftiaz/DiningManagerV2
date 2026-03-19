@@ -47,16 +47,16 @@ export default function Login() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-black-900 to-black-800 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-black-900 to-black-800 px-4 py-8">
       <Card className="w-full max-w-md">
-        <CardHeader className="space-y-2 text-center">
-          <CardTitle className="text-3xl font-bold">Dining Manager</CardTitle>
-          <CardDescription>Sign in to your manager account</CardDescription>
+        <CardHeader className="space-y-2 text-center px-4 sm:px-6">
+          <CardTitle className="text-2xl sm:text-3xl font-bold">Dining Manager</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">Sign in to your manager account</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-4 sm:px-6">
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-xs sm:text-sm">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -66,11 +66,12 @@ export default function Login() {
                 required
                 disabled={loading}
                 autoComplete="email"
+                className="text-sm"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-xs sm:text-sm">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -80,6 +81,7 @@ export default function Login() {
                 required
                 disabled={loading}
                 autoComplete="current-password"
+                className="text-sm"
               />
             </div>
 
@@ -93,7 +95,7 @@ export default function Login() {
             </Button>
           </form>
 
-          <div className="mt-6 text-center text-sm">
+          <div className="mt-6 text-center text-xs sm:text-sm">
             <p className="text-slate-600">
               Don't have an account?{' '}
               <a

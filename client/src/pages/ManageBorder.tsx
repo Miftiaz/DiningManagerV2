@@ -265,32 +265,56 @@ export default function ManageBorder() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-4xl font-bold">Manage Border</h1>
-        <p className="text-gray-600 mt-2">Search and manage student dining borders</p>
+      <div className="px-2 sm:px-0">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">Manage Border</h1>
+        <p className="text-sm sm:text-base text-gray-600 mt-2">Search and manage student dining borders</p>
       </div>
 
       {/* Search Section */}
-      <div className='space-y-6 grid grid-cols-[20%_80%] space-x-6'>
-        <div className='space-y-6 '>
-          <Card className='max-w-80'>
+      {!searched ? (
+        <div className='flex justify-center'>
+          <Card className='w-full max-w-md'>
             <CardHeader>
-              <CardTitle>Search Student</CardTitle>
+              <CardTitle className="text-base sm:text-lg">Search Student</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <Input
                   placeholder="Enter Student ID"
                   value={searchId}
                   onChange={(e) => setSearchId(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                  className="text-sm"
                 />
-                <Button onClick={handleSearch} disabled={loading}>
+                <Button onClick={handleSearch} disabled={loading} className="w-full sm:w-auto">
                   {loading ? 'Searching...' : 'Search'}
                 </Button>
               </div>
             </CardContent>
           </Card>
+        </div>
+      ) : (
+        <div className='space-y-6 grid grid-cols-1 lg:grid-cols-5 gap-6'>
+          <div className='space-y-6 col-span-1 lg:col-span-1'>
+            <Card className='w-full'>
+              <CardHeader>
+                <CardTitle className="text-base sm:text-lg">Search Student</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Input
+                    placeholder="Enter Student ID"
+                    value={searchId}
+                    onChange={(e) => setSearchId(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                    className="text-sm"
+                  />
+                  <Button onClick={handleSearch} disabled={loading} className="w-full sm:w-auto">
+                    {loading ? 'Searching...' : 'Search'}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
         
 
 
@@ -298,21 +322,21 @@ export default function ManageBorder() {
           {searched && !studentData && (
             <Card>
               <CardHeader>
-                <CardTitle>Add New Student</CardTitle>
-                <CardDescription>Enter student details to create a new record</CardDescription>
+                <CardTitle className="text-base sm:text-lg">Add New Student</CardTitle>
+                <CardDescription className="text-xs sm:text-sm">Enter student details to create a new record</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex flex-col gap-2">
-                  <Label htmlFor="studentName">Student Name</Label>
-                  <Input id="studentName" placeholder="Full name" />
+                  <Label htmlFor="studentName" className="text-xs sm:text-sm">Student Name</Label>
+                  <Input id="studentName" placeholder="Full name" className="text-sm" />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <Label htmlFor="studentPhone">Phone Number</Label>
-                  <Input id="studentPhone" placeholder="+880..." type="tel" />
+                  <Label htmlFor="studentPhone" className="text-xs sm:text-sm">Phone Number</Label>
+                  <Input id="studentPhone" placeholder="+880..." type="tel" className="text-sm" />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <Label htmlFor="studentRoom">Room Number</Label>
-                  <Input id="studentRoom" placeholder="Room no" />
+                  <Label htmlFor="studentRoom" className="text-xs sm:text-sm">Room Number</Label>
+                  <Input id="studentRoom" placeholder="Room no" className="text-sm" />
                 </div>
               </CardContent>
             </Card>
@@ -323,28 +347,28 @@ export default function ManageBorder() {
             <>
               <Card>
                 <CardHeader>
-                  <CardTitle>Student Information</CardTitle>
+                  <CardTitle className="text-base sm:text-lg">Student Information</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
+                  <div className="space-y-4 text-sm">
                     <div>
-                      <p className="text-sm text-gray-600">ID</p>
+                      <p className="text-xs text-gray-600">ID</p>
                       <p className="font-semibold">{studentData.id}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600">Name</p>
+                      <p className="text-xs text-gray-600">Name</p>
                       <p className="font-semibold">{studentData.name}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600">Phone</p>
+                      <p className="text-xs text-gray-600">Phone</p>
                       <p className="font-semibold">{studentData.phone || '-'}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600">Room</p>
+                      <p className="text-xs text-gray-600">Room</p>
                       <p className="font-semibold">{studentData.roomNo || '-'}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600">Selected Days</p>
+                      <p className="text-xs text-gray-600">Selected Days</p>
                       <p className="font-semibold">{studentData.selectedDays.length || 0}</p>
                     </div>
                   </div>
@@ -354,16 +378,16 @@ export default function ManageBorder() {
               {/* Feast Payment Alert */}
               {!studentData.feastpaid ? (
                 <Alert className="border-orange-600 bg-grey-700">
-                  <UtensilsCrossed className="h-5 w-5 text-orange-600" />
-                  <AlertTitle className="text-orange-600">Feast Payment Due</AlertTitle>
-                  <AlertDescription className="flex items-center justify-between gap-4 mt-2">
+                  <UtensilsCrossed className="h-4 w-4 sm:h-5 sm:w-5 text-orange-600" />
+                  <AlertTitle className="text-orange-600 text-sm sm:text-base">Feast Payment Due</AlertTitle>
+                  <AlertDescription className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-2">
                     <div>
-                      <p className="text-lg font-bold text-orange-600">100 TK</p>
+                      <p className="text-base sm:text-lg font-bold text-orange-600">100 TK</p>
                     </div>
                     <Button 
                       onClick={handlePayFeast}
                       disabled={feastLoading}
-                      className="bg-orange-600 hover:bg-orange-700 text-white"
+                      className="bg-orange-600 hover:bg-orange-700 text-white w-full sm:w-auto"
                       size="sm"
                     >
                       {feastLoading ? 'Processing...' : 'Pay Now'}
@@ -372,23 +396,23 @@ export default function ManageBorder() {
                 </Alert>
               ) : (
                 <Alert >
-                  <CheckCircle className="h-5 w-5 text-green-600" />
-                  <AlertTitle>Feast Payment</AlertTitle>
+                  <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
+                  <AlertTitle className="text-sm sm:text-base">Feast Payment</AlertTitle>
                   <AlertDescription>
-                    <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300 dark:bg-gray-600 dark:text-green-100">Paid</Badge>
+                    <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300 dark:bg-gray-600 dark:text-green-100 text-xs">Paid</Badge>
                   </AlertDescription>
                 </Alert>
               )}
             </>
           )}
         </div>
-        <div className='w-full flex items-center'>
+        <div className='w-full col-span-1 lg:col-span-4 flex items-start'>
           {/* Mode Selection & Calendar */}
           {searched && monthData?.calendarDays && (
-            <Card>
+            <Card className="w-full">
               <CardHeader className='items-center'>
-                <CardTitle>Manage Dining Days</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-base sm:text-lg">Manage Dining Days</CardTitle>
+                <CardDescription className="text-xs sm:text-sm text-center">
                   {token 
                     ? 'Select dining days to purchase' 
                     : token === false 
@@ -396,7 +420,7 @@ export default function ManageBorder() {
                     : 'Choose an option to manage tokens'}
                 </CardDescription>
                 {/* Mode Buttons */}
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row h-22 gap-2 w-full">
                   <Button
                     variant={token ? 'default' : 'outline'}
                     onClick={() => {
@@ -405,6 +429,7 @@ export default function ManageBorder() {
                       setSelectedDates(new Set());
                       setPaidAmount(0);
                     }}
+                    className="flex-1 text-sm"
                   >
                     Adjust Days
                   </Button>
@@ -416,51 +441,55 @@ export default function ManageBorder() {
                       setSelectedDates(new Set());
                       setRefundedAmount(0);
                     }}
+                    className="flex-1 text-sm"
                   >
                     Return Token
                   </Button>
                 </div>
               </CardHeader>
-              <CardContent className="space-y-6">
-                <DiningCalendar 
-                  monthData={monthData} 
-                  studentData={studentData} 
-                  mode="student" 
-                  selectable={selectable} 
-                  token={token}
-                  selectedDates={selectedDates}
-                  setSelectedDates={setSelectedDates}
-                  onAdjust={handleAdjust}
-                  onReturnToken={handleReturnToken}
-                />
+              <CardContent className="space-y-6 px-2 sm:px-6 overflow-x-auto flex justify-center">
+                <div className="min-w-max">
+                  <DiningCalendar 
+                    monthData={monthData} 
+                    studentData={studentData} 
+                    mode="student" 
+                    selectable={selectable} 
+                    token={token}
+                    selectedDates={selectedDates}
+                    setSelectedDates={setSelectedDates}
+                    onAdjust={handleAdjust}
+                    onReturnToken={handleReturnToken}
+                  />
+                </div>
               </CardContent>
             </Card>
           )}  
         </div>
       </div>
+      )}
 
-      <div>
+      <div className="px-2 sm:px-0">
         {/* Transaction History */}
         {studentData?.transactions && studentData.transactions.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle>Transaction History</CardTitle>
+              <CardTitle className="text-base sm:text-lg">Transaction History</CardTitle>
             </CardHeader>
             <CardContent className="overflow-x-auto">
-              <Table>
+              <Table className="text-xs sm:text-sm">
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Days</TableHead>
-                    <TableHead>Payable</TableHead>
-                    <TableHead>Paid</TableHead>
-                    <TableHead>Due</TableHead>
-                    <TableHead>Type</TableHead>
+                    <TableHead className="text-xs">Date</TableHead>
+                    <TableHead className="text-xs">Days</TableHead>
+                    <TableHead className="text-xs">Payable</TableHead>
+                    <TableHead className="text-xs">Paid</TableHead>
+                    <TableHead className="text-xs">Due</TableHead>
+                    <TableHead className="text-xs">Type</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {studentData.transactions.map((transaction, index) => (
-                    <TableRow key={index}>
+                    <TableRow key={index} className="text-xs sm:text-sm">
                       <TableCell>{new Date(transaction.date).toLocaleDateString()}</TableCell>
                       <TableCell>{transaction.days}</TableCell>
                       <TableCell>{transaction.amount} TK</TableCell>
@@ -469,7 +498,7 @@ export default function ManageBorder() {
                       <TableCell className="capitalize">{transaction.type}</TableCell>
                     </TableRow>
                   ))}
-                  <TableRow className="font-semibold bg-gray-50 dark:bg-gray-900">
+                  <TableRow className="font-semibold bg-gray-50 dark:bg-gray-900 text-xs sm:text-sm">
                     <TableCell colSpan={1}>Total</TableCell>
                     <TableCell>
                       {studentData.transactions.reduce((sum, t) => sum + t.days, 0)}

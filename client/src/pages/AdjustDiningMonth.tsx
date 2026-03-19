@@ -206,50 +206,52 @@ export default function AdjustDiningMonth() {
   }
 
   return (
-    <div className="flex flex-col items-center space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Adjust Dining Month</h1>
+    <div className="flex flex-col items-center space-y-6 px-2 sm:px-0">
+      <div className="w-full">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Adjust Dining Month</h1>
       </div>
 
       
 
       {/* Calendar Section */}
       {dashboardData && (
-        <Card  className="flex items-center">
+        <Card className="flex items-center w-full">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Calendar className="h-5 w-5" />
+            <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+              <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
               Calendar
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <DiningCalendar
-              monthData={dashboardData}
-              mode="admin"
-              selectable={true}
-              showBorder={false}
-              selectedDates={selectedDates}
-              setSelectedDates={setSelectedDates}
-              breakMode={breakMode}
-              breakReason={breakReason}
-              setBreakReason={setBreakReason}
-              actionLoading={actionLoading}
-              onAddBreakMode={handleAddBreakMode}
-              onRemoveBreakMode={handleRemoveBreakMode}
-              onConfirmAddBreak={handleConfirmAddBreak}
-              onConfirmRemoveBreak={handleConfirmRemoveBreak}
-            />
+          <CardContent className="w-full px-2 sm:px-6 overflow-x-auto flex justify-center">
+            <div className="min-w-max">
+              <DiningCalendar
+                monthData={dashboardData}
+                mode="admin"
+                selectable={true}
+                showBorder={false}
+                selectedDates={selectedDates}
+                setSelectedDates={setSelectedDates}
+                breakMode={breakMode}
+                breakReason={breakReason}
+                setBreakReason={setBreakReason}
+                actionLoading={actionLoading}
+                onAddBreakMode={handleAddBreakMode}
+                onRemoveBreakMode={handleRemoveBreakMode}
+                onConfirmAddBreak={handleConfirmAddBreak}
+                onConfirmRemoveBreak={handleConfirmRemoveBreak}
+              />
+            </div>
           </CardContent>
         </Card>
       )}
 
       {/* Action Buttons */}
       {breakMode === null && (
-        <div className="flex item-center gap-2">
-          <Button onClick={handleAddBreakMode} variant={breakMode ? 'default' : 'outline'}>
+        <div className="flex flex-col sm:flex-row gap-2 w-full item-center">
+          <Button onClick={handleAddBreakMode} variant={breakMode ? 'default' : 'outline'} className="flex-1 text-sm">
             Add Break
           </Button>
-          <Button onClick={handleRemoveBreakMode} variant={breakMode ? 'default' : 'outline'}>
+          <Button onClick={handleRemoveBreakMode} variant={breakMode ? 'default' : 'outline'} className="flex-1 text-sm">
             Remove Break
           </Button>
         </div>
@@ -257,13 +259,13 @@ export default function AdjustDiningMonth() {
 
       {/* Breaks Section */}
       {dashboardData && (
-        <Card  className="flex items-center">
+        <Card className="flex items-center w-full">
           <CardHeader>
-            <CardTitle>Current Breaks</CardTitle>
+            <CardTitle className="text-base sm:text-lg">Current Breaks</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="w-full overflow-x-auto px-2 sm:px-6">
             {dashboardData.breakDates && dashboardData.breakDates.length > 0 ? (
-              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2">
                 {dashboardData.breakDates.map((bd, idx) => {
                   const date = new Date(bd.date)
                   const monthNames = [
@@ -285,9 +287,9 @@ export default function AdjustDiningMonth() {
                   return (
                     <div
                       key={`break-${idx}`}
-                      className="flex flex-col items-center justify-center p-3 border rounded-lg bg-muted/50"
+                      className="flex flex-col items-center justify-center p-2 sm:p-3 border rounded-lg bg-muted/50 text-xs sm:text-sm"
                     >
-                      <p className="font-semibold text-sm">{formattedDate}</p>
+                      <p className="font-semibold">{formattedDate}</p>
                       {bd.reason && (
                         <p className="text-xs text-muted-foreground text-center mt-1 line-clamp-2">{bd.reason}</p>
                       )}
@@ -301,10 +303,10 @@ export default function AdjustDiningMonth() {
                   <EmptyMedia variant="icon">
                     <AlertCircle className="h-6 w-6" />
                   </EmptyMedia>
-                  <EmptyTitle>No breaks added</EmptyTitle>
+                  <EmptyTitle className="text-base sm:text-lg">No breaks added</EmptyTitle>
                 </EmptyHeader>
                 <EmptyContent>
-                  <EmptyDescription>
+                  <EmptyDescription className="text-xs sm:text-sm">
                     No break dates have been added to this dining month
                   </EmptyDescription>
                 </EmptyContent>

@@ -222,28 +222,31 @@ export default function DiningCalendar({monthData, ...dayProps}: DiningCalendarP
             // token = 1 → purchase: disable selectedDays & returned days
             const purchaseDates =
                 dayProps.studentData?.selectedDays?.map((d: any) => new Date(d.day.date)) || [];
+            const breakDates = (monthData.breakDates || []).map((b: any) => new Date(b.date));
             const returnDates =
                 dayProps.studentData?.returnedDays?.map((dayId: any) => {
                   const diningDay = monthData.calendarDays.find((cd: any) => cd._id === dayId);
                   return diningDay ? new Date(diningDay.date) : null;
                 }).filter(Boolean) || [];
-            disabledMatchers = [...baseMatchers, ...purchaseDates, ...returnDates];
+            disabledMatchers = [...baseMatchers, ...purchaseDates, ...returnDates, ...breakDates];
 
         } else if (dayProps.token === false) {
             // token = 0 → return: disable non-purchased
             const calenderDates = Object.values(calendarDayMap).map(d => new Date(d.date));
+            const breakDates = (monthData.breakDates || []).map((b: any) => new Date(b.date));
             const purchaseDates =
                 dayProps.studentData?.selectedDays?.map((d: any) => new Date(d.day.date)) || [];
             const purchaseSet = new Set(purchaseDates.map(d => d.getTime()));
             const datesToDisable = calenderDates.filter(
                 calDate => !purchaseSet.has(calDate.getTime())
             );
-            disabledMatchers = [...baseMatchers, ...datesToDisable];
+            disabledMatchers = [...baseMatchers, ...datesToDisable, ...breakDates];
         }
         else{
             // Not selectable → disable all dates
             const disabledDates = Object.values(calendarDayMap).map(d => new Date(d.date));
-            disabledMatchers = [...baseMatchers, ...disabledDates];
+            const breakDates = (monthData.breakDates || []).map((b: any) => new Date(b.date));
+            disabledMatchers = [...baseMatchers, ...disabledDates, ...breakDates];
         }
 
     } else {
@@ -294,7 +297,7 @@ export default function DiningCalendar({monthData, ...dayProps}: DiningCalendarP
                     dining: "bg-green-500 text-white !font-bold hover:bg-green-600",
                     break: "bg-red-500 text-white font-black hover:bg-red-600",
                     today: "border-3 border-green-800",
-                    returned: "!bg-orange-500 text-white"
+                    returned: "!bg-orange-500 text-white",
                 }}
                 className={`[--cell-size:2rem] sm:[--cell-size:1rem] ${
                     months.length > 2 ? "md:[--cell-size:2rem]" : "md:[--cell-size:3rem]"

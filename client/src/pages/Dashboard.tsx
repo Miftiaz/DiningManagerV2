@@ -93,34 +93,36 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-4xl font-bold">Manager Dashboard</h1>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">Manager Dashboard</h1>
       </div>
 
       {/* Dashboard Content */}
       {dashboardData?.activeDiningMonth ? (
         <>
           {/* Main Layout: Chart (60%) + Stats Cards (40%) */}
-          <div className="grid grid-cols-12 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
             {/* Chart Section - 60% */}
-            <div className="col-span-12 lg:col-span-7">
+            <div className="col-span-1 lg:col-span-7">
               <Card className="h-full">
-                <CardHeader className="flex flex-col items-center ">
-                  <CardTitle className="text-3xl">Border Count by Day</CardTitle>
-                  <CardDescription>Number of borders registered for each dining day</CardDescription>
+                <CardHeader className="flex flex-col items-center px-3 sm:px-6">
+                  <CardTitle className="text-xl sm:text-2xl lg:text-3xl">Border Count by Day</CardTitle>
+                  <CardDescription className="text-xs sm:text-sm text-center">Number of borders registered for each dining day</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <div style={{ width: '100%', height: 400 }}>
+                <CardContent className="px-3 sm:px-6">
+                  <div style={{ width: '100%', height: 300 }}>
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={dashboardData.calendarDays || []}>
                         <XAxis 
                           dataKey="day" 
                           label={{ value: 'Day Number', position: 'insideBottomRight', offset: -5 }}
+                          tick={{ fontSize: 12 }}
                         />
                         <YAxis 
                           label={{ value: 'Border Count', angle: -90, position: 'insideLeft' }}
+                          tick={{ fontSize: 12 }}
                         />
                         <Tooltip 
                           cursor={{ fill: "var(--chart-cursor)" }}
@@ -129,8 +131,8 @@ export default function Dashboard() {
                               const data = payload[0].payload;
                               return (
                                 <div className="bg-white p-2 border rounded shadow">
-                                  <p className="font-semibold">Day {data.day}</p>
-                                  <p className="text-sm">
+                                  <p className="font-semibold text-sm">Day {data.day}</p>
+                                  <p className="text-xs">
                                     Borders: {data.borderCount}
                                   </p>
                                   <p className="text-xs text-gray-500">
@@ -151,24 +153,24 @@ export default function Dashboard() {
             </div>
 
             {/* Stats Cards Section - 40% */}
-            <div className="col-span-12 lg:col-span-5">
-              <div className="grid grid-cols-2 gap-4 h-full">
+            <div className="col-span-1 lg:col-span-5">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-2 sm:gap-4 h-full">
                 {/* Next Day Number */}
-                <Card className="flex items-center justify-center">
-                  <CardContent className="pt-6">
-                    <div className="flex flex-col items-center justify-center space-y-2">
-                      <p className="text-xs sm:text-sm font-medium opacity-90">Next Day Number</p>
-                      <p className="text-3xl sm:text-8xl font-bold">{dashboardData.nextDayInfo?.nextDayNo || '-'}</p>
+                <Card className="flex items-center justify-center col-span-2 sm:col-span-1">
+                  <CardContent className="pt-4 sm:pt-6 w-full">
+                    <div className="flex flex-col items-center justify-center space-y-1 sm:space-y-2">
+                      <p className="text-xs sm:text-sm font-medium opacity-90 text-center">Next Day Number</p>
+                      <p className="text-2xl sm:text-4xl lg:text-8xl font-bold">{dashboardData.nextDayInfo?.nextDayNo || '-'}</p>
                     </div>
                   </CardContent>
                 </Card>
 
                 {/* Next Date */}
-                <Card className="flex items-center justify-center">
-                  <CardContent className="pt-6">
-                    <div className="flex flex-col items-center justify-center space-y-2">
-                      <p className="text-xs sm:text-sm font-medium opacity-90">Next Date</p>
-                      <p className="text-2xl sm:text-6xl font-bold">
+                <Card className="flex items-center justify-center col-span-2 sm:col-span-1">
+                  <CardContent className="pt-4 sm:pt-6 w-full">
+                    <div className="flex flex-col items-center justify-center space-y-1 sm:space-y-2">
+                      <p className="text-xs sm:text-sm font-medium opacity-90 text-center">Next Date</p>
+                      <p className="text-lg sm:text-3xl lg:text-6xl font-bold text-center">
                         {dashboardData.nextDayInfo?.date 
                           ? new Date(dashboardData.nextDayInfo.date).toLocaleDateString("en-US", {
                               month: "short",
@@ -182,21 +184,21 @@ export default function Dashboard() {
                 </Card>
 
                 {/* Next Day Borders */}
-                <Card className="flex items-center justify-center">
-                  <CardContent className="pt-6">
-                    <div className="flex flex-col items-center justify-center space-y-2">
-                      <p className="text-xs sm:text-sm font-medium opacity-90">Next Day Borders</p>
-                      <p className="text-3xl sm:text-8xl font-bold">{dashboardData.nextDayInfo?.borderCount || '0'}</p>
+                <Card className="flex items-center justify-center col-span-2 sm:col-span-1">
+                  <CardContent className="pt-4 sm:pt-6 w-full">
+                    <div className="flex flex-col items-center justify-center space-y-1 sm:space-y-2">
+                      <p className="text-xs sm:text-sm font-medium opacity-90 text-center">Next Day Borders</p>
+                      <p className="text-2xl sm:text-4xl lg:text-8xl font-bold">{dashboardData.nextDayInfo?.borderCount || '0'}</p>
                     </div>
                   </CardContent>
                 </Card>
 
                 {/* Feast Subscribers */}
-                <Card className="flex items-center justify-center">
-                  <CardContent className="pt-6">
-                    <div className="flex flex-col items-center justify-center space-y-2">
-                      <p className="text-xs sm:text-sm font-medium opacity-90">Feast Subscribers</p>
-                      <p className="text-3xl sm:text-8xl font-bold">{dashboardData.activeDiningMonth?.feastSubscribers || '0'}</p>
+                <Card className="flex items-center justify-center col-span-2 sm:col-span-1">
+                  <CardContent className="pt-4 sm:pt-6 w-full">
+                    <div className="flex flex-col items-center justify-center space-y-1 sm:space-y-2">
+                      <p className="text-xs sm:text-sm font-medium opacity-90 text-center">Feast Subscribers</p>
+                      <p className="text-2xl sm:text-4xl lg:text-8xl font-bold">{dashboardData.activeDiningMonth?.feastSubscribers || '0'}</p>
                     </div>
                   </CardContent>
                 </Card>
@@ -205,24 +207,26 @@ export default function Dashboard() {
           </div>
 
           {/* Calendar Section */}
-          <Card>
-            <CardHeader >
-              <CardTitle className="flex flex-col items-center text-3xl">Dining Month Calendar</CardTitle>
-              <CardDescription className="flex flex-col items-center">View the current dining month schedule</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex justify-center">
-                <DiningCalendar 
-                  monthData={dashboardData} 
-                  mode="admin" 
-                  selectable={false} 
-                  showBorder={true}
-                  selectedDates={selectedDates}
-                  setSelectedDates={setSelectedDates}
-                />
-              </div>
-            </CardContent>
-          </Card>
+          <div className="flex justify-center w-full">
+            <Card>
+              <CardHeader className="px-3 sm:px-6">
+                <CardTitle className="flex flex-col items-center text-xl sm:text-2xl lg:text-3xl text-center">Dining Month Calendar</CardTitle>
+                <CardDescription className="flex flex-col items-center text-xs sm:text-sm text-center">View the current dining month schedule</CardDescription>
+              </CardHeader>
+              <CardContent className="px-3 sm:px-6 overflow-x-auto flex justify-center">
+                <div className="min-w-max">
+                  <DiningCalendar 
+                    monthData={dashboardData} 
+                    mode="admin" 
+                    selectable={false} 
+                    showBorder={true}
+                    selectedDates={selectedDates}
+                    setSelectedDates={setSelectedDates}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </>
       ) : (
         <Card className="border-dashed">
@@ -240,7 +244,7 @@ export default function Dashboard() {
 
       {/* Month Setup Dialog */}
       <Dialog open={showMonthSetup} onOpenChange={setShowMonthSetup}>
-        <DialogContent className=" flex flex-col justify-center items-center">
+        <DialogContent className="flex flex-col justify-center items-center w-[95vw] sm:w-full max-w-md px-4 sm:px-0">
           <DialogHeader>
             <DialogTitle>Start New Dining Month</DialogTitle>
             <DialogDescription>
@@ -248,7 +252,7 @@ export default function Dashboard() {
             </DialogDescription>
           </DialogHeader>
 
-          <div className="flex justify-center" >
+          <div className="flex justify-center w-full overflow-x-auto" >
             <Calendar
               mode="single"
               selected={startDate}
@@ -257,14 +261,14 @@ export default function Dashboard() {
                 const today = new Date()
                 return date < today
               }}
-              className="rounded-md border"
+              className="rounded-md border text-sm sm:text-base"
             />
             
             
           </div>
-          <DialogFooter className="gap-2">
+          <DialogFooter className="gap-2 w-full flex flex-col sm:flex-row">
             
-            <Button onClick={handleStartMonth}>
+            <Button onClick={handleStartMonth} className="w-full sm:w-auto">
               Start Month
             </Button>
             <Button
@@ -273,6 +277,7 @@ export default function Dashboard() {
                 setShowMonthSetup(false)
                 setStartDate(undefined)
               }}
+              className="w-full sm:w-auto"
             >
               Cancel
             </Button>

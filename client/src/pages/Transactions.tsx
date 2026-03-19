@@ -205,7 +205,7 @@ export default function Transactions() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <p className="text-muted-foreground">Loading transactions...</p>
+        <p className="text-muted-foreground text-sm">Loading transactions...</p>
       </div>
     )
   }
@@ -213,15 +213,15 @@ export default function Transactions() {
   const totals = calculateTotals()
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 px-2 sm:px-0">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Transaction History</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Transaction History</h1>
         </div>
         <Button
           onClick={downloadPDF}
           disabled={downloadLoading || transactions.length === 0}
-          className="gap-2"
+          className="gap-2 w-full sm:w-auto text-sm"
         >
           <Download className="h-4 w-4" />
           {downloadLoading ? 'Generating PDF...' : 'Download PDF'}
@@ -234,10 +234,10 @@ export default function Transactions() {
             <EmptyMedia variant="icon">
               <FileText className="h-6 w-6" />
             </EmptyMedia>
-            <EmptyTitle>No transactions found</EmptyTitle>
+            <EmptyTitle className="text-base sm:text-lg">No transactions found</EmptyTitle>
           </EmptyHeader>
           <EmptyContent>
-            <EmptyDescription>
+            <EmptyDescription className="text-xs sm:text-sm">
               There are no transactions for the current dining month
             </EmptyDescription>
           </EmptyContent>
@@ -245,25 +245,25 @@ export default function Transactions() {
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">All Transactions</CardTitle>
+            <CardTitle className="text-base sm:text-lg">All Transactions</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="border rounded-lg overflow-hidden">
-              <Table>
+            <div className="border rounded-lg overflow-x-auto">
+              <Table className="text-xs sm:text-sm">
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Student ID</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead className="text-right">Days</TableHead>
-                    <TableHead className="text-right">Payable/Returnable</TableHead>
-                    <TableHead className="text-right">Paid/Refunded</TableHead>
-                    <TableHead className="text-right">Due</TableHead>
-                    <TableHead>Type</TableHead>
+                    <TableHead className="text-xs">Student ID</TableHead>
+                    <TableHead className="text-xs">Date</TableHead>
+                    <TableHead className="text-xs text-right">Days</TableHead>
+                    <TableHead className="text-xs text-right">Payable/Returnable</TableHead>
+                    <TableHead className="text-xs text-right">Paid/Refunded</TableHead>
+                    <TableHead className="text-xs text-right">Due</TableHead>
+                    <TableHead className="text-xs">Type</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {transactions.map((transaction, index) => (
-                    <TableRow key={transaction._id || index}>
+                    <TableRow key={transaction._id || index} className="text-xs sm:text-sm">
                       <TableCell className="font-medium">{transaction.studentId}</TableCell>
                       <TableCell>{formatDate(transaction.date)}</TableCell>
                       <TableCell className="text-right">{transaction.days}</TableCell>
@@ -273,13 +273,13 @@ export default function Transactions() {
                         {calculateDue(transaction.amount, transaction.paidAmount)}
                       </TableCell>
                       <TableCell>
-                        <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                        <span className="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
                           {transaction.type}
                         </span>
                       </TableCell>
                     </TableRow>
                   ))}
-                  <TableRow className="bg-muted font-semibold">
+                  <TableRow className="bg-muted font-semibold text-xs sm:text-sm">
                     <TableCell colSpan={2}>Total</TableCell>
                     <TableCell className="text-right">{totals.days}</TableCell>
                     <TableCell className="text-right">{totals.amount} TK</TableCell>
