@@ -304,20 +304,14 @@ export default function DiningCalendar({monthData, ...dayProps}: DiningCalendarP
                 }`}
                 classNames={{ disabled: "opacity-100" }}
                 components={{
-                    Day: ({ children, day, modifiers, ...props }) => {
+                    DayButton: ({ children, day, modifiers, ...props }) => {
                     const dateStr = day.date.toDateString();
                     const calendarDay = calendarDayMap[dateStr];
                     const isBreakDay = breakDateSet.has(dateStr);
 
                     return (
-                        <td {...props}>
-                        
+                        <CalendarDayButton day={day} modifiers={modifiers} {...props}>
                             {children}
-                            {calendarDay && dayProps.mode === "admin" && dayProps.showBorder && (
-                                <span className="absolute -top-0.5 -right-0.5 bg-red-600 text-white text-[10px] font-bold rounded-full w-6 h-6 flex items-center justify-center shadow">
-                                    {calendarDay.borderCount}
-                                </span>
-                            )}
                             {calendarDay && (
                                 <span className="text-[10px] leading-none bg-green-800 text-white px-1 rounded">
                                     Day {calendarDay.day || calendarDay.dayNumber}
@@ -328,8 +322,12 @@ export default function DiningCalendar({monthData, ...dayProps}: DiningCalendarP
                                     Break
                                 </span>
                             )}
-                        
-                        </td>
+                            {calendarDay && dayProps.mode === "admin" && dayProps.showBorder && (
+                                <span className="absolute -top-0.5 -right-0.5 bg-red-600 text-white text-[10px] font-bold rounded-full w-6 h-6 flex items-center justify-center shadow">
+                                    {calendarDay.borderCount}
+                                </span>
+                            )}
+                        </CalendarDayButton>
                     );
                     },
                 }}
