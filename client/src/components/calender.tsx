@@ -332,7 +332,27 @@ export default function DiningCalendar({monthData, ...dayProps}: DiningCalendarP
                     },
                 }}
                 footer={
-                    dayProps.mode === "student" && dayProps.token != null ? (
+                    <>
+                    <Separator className="my-3" />
+                    <div className="flex flex-wrap justify-center gap-3 px-4 py-2">
+                        <div className="flex items-center gap-1">
+                            <div className="w-3 h-3 bg-green-500 rounded"></div>
+                            <span className="text-xs">Dining</span>
+                        </div>
+                        {monthData.breakDates && monthData.breakDates.length > 0 && <div className="flex items-center gap-1">
+                            <div className="w-3 h-3 bg-red-500 rounded"></div>
+                            <span className="text-xs">Break</span>
+                        </div>}
+                        {dayProps.mode === "student" && dayProps.studentData?.returnedDays && dayProps.studentData.returnedDays.length > 0 && <div className="flex items-center gap-1">
+                            <div className="w-3 h-3 bg-orange-500 rounded"></div>
+                            <span className="text-xs">Returned</span>
+                        </div>}
+                        <div className="flex items-center gap-1">
+                            <div className="w-3 h-3 border border-green-800 rounded"></div>
+                            <span className="text-xs">Today</span>
+                        </div>
+                    </div>
+                    {dayProps.mode === "student" && dayProps.token != null ? (
                     <>
 
                     {/* Selected Days & Paid Amount Section */}
@@ -551,7 +571,8 @@ export default function DiningCalendar({monthData, ...dayProps}: DiningCalendarP
                                 </div>
                     </div>
                     </>
-                    ) : null
+                    ) : null}
+                    </>
                 }
                 />
             </CardContent>

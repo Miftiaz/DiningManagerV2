@@ -27,12 +27,30 @@ export default function Dashboard() {
   const [startDate, setStartDate] = useState<Date | undefined>(undefined)
   const [loading, setLoading] = useState(true)
   const [selectedDates, setSelectedDates] = useState(new Set<string>())
+  const [isDarkMode, setIsDarkMode] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
 
   useEffect(() => {
     fetchDashboard()
   }, [location])
+
+  useEffect(() => {
+    // Check initial dark mode state
+    setIsDarkMode(document.documentElement.classList.contains('dark'))
+
+    // Listen for theme changes
+    const observer = new MutationObserver(() => {
+      setIsDarkMode(document.documentElement.classList.contains('dark'))
+    })
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    })
+
+    return () => observer.disconnect()
+  }, [])
 
   const fetchDashboard = async (): Promise<void> => {
     try {
@@ -125,17 +143,17 @@ export default function Dashboard() {
                           tick={{ fontSize: 12 }}
                         />
                         <Tooltip 
-                          cursor={{ fill: "var(--chart-cursor)" }}
+                          cursor={{ fill: isDarkMode ? "#404040" : "#e5e7eb" }}
                           content={({ active, payload }) => {
                             if (active && payload && payload.length) {
                               const data = payload[0].payload;
                               return (
-                                <div className="bg-white p-2 border rounded shadow">
+                                <div className="bg-white dark:bg-slate-950 p-2 border rounded shadow text-gray-900 dark:text-white dark:border-slate-700">
                                   <p className="font-semibold text-sm">Day {data.day}</p>
                                   <p className="text-xs">
                                     Borders: {data.borderCount}
                                   </p>
-                                  <p className="text-xs text-gray-500">
+                                  <p className="text-xs text-gray-600 dark:text-gray-400">
                                     {new Date(data.date).toLocaleDateString()}
                                   </p>
                                 </div>
