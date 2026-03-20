@@ -215,7 +215,7 @@ export default function ManageFeastToken() {
   return (
     <div className="space-y-6">
       <div className="px-2 sm:px-0">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Manage Students</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Manage Feast Tokens</h1>
       </div>
 
       <div className="flex gap-2 px-2 sm:px-0">

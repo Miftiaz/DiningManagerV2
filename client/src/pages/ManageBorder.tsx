@@ -135,7 +135,7 @@ export default function ManageBorder() {
         return { dayId: day?._id, meals: 2 };
       }).filter(d => d.dayId);
 
-      await borderAPI.adjustStudentDays({
+      const adjustRes = await borderAPI.adjustStudentDays({
         studentId: searchId,
         name,
         phone,
@@ -145,7 +145,7 @@ export default function ManageBorder() {
         feastDue: 0
       } as any);
       
-      toast.success('Student updated successfully');
+      toast.success(adjustRes.data?.message || 'Student updated successfully');
       setSelectedDates(new Set());
       setToken(null);
       
@@ -174,8 +174,8 @@ export default function ManageBorder() {
         );
         setStudentSelectedDays(existingDates);
       }
-    } catch (err) {
-      toast.error('Failed to update student');
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || 'Failed to update student');
       console.log(err);
     }
   };
@@ -187,19 +187,19 @@ export default function ManageBorder() {
     }
 
     try {
-      await borderAPI.returnToken({
+      const res = await borderAPI.returnToken({
         studentId: searchId,
         datesToRemove: returnedDates,
         refundedAmount: Number(refundedAmount)
       } as any);
       
-      toast.success('Token returned successfully');
+      toast.success(res.data?.message || 'Token returned successfully');
       setSelectedDates(new Set());
       setRefundedAmount(0);
       setToken(null);
 
-      const res = await borderAPI.searchStudent(searchId);
-      const { diningMonth, calendarDays, breakDates, manager, nextDayInfo, stats, student, studentData: sd } = res.data;
+      const searchRes = await borderAPI.searchStudent(searchId);
+      const { diningMonth, calendarDays, breakDates, manager, nextDayInfo, stats, student, studentData: sd } = searchRes.data;
       
       const transformedMonthData = {
         activeDiningMonth: diningMonth,
@@ -221,8 +221,8 @@ export default function ManageBorder() {
         );
         setStudentSelectedDays(existingDates);
       }
-    } catch (err) {
-      toast.error('Failed to return token');
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || 'Failed to return token');
       console.log(err)
     }
   };
@@ -230,8 +230,8 @@ export default function ManageBorder() {
   const handlePayFeast = async () => {
     setFeastLoading(true);
     try {
-      await borderAPI.payFeastDue({ studentId: searchId } as any);
-      toast.success('Feast paid successfully');
+      const feastRes = await borderAPI.payFeastDue({ studentId: searchId } as any);
+      toast.success(feastRes.data?.message || 'Feast paid successfully');
       
       const res = await borderAPI.searchStudent(searchId);
       const { diningMonth, calendarDays, breakDates, manager, nextDayInfo, stats, student, studentData: sd } = res.data;
@@ -249,8 +249,8 @@ export default function ManageBorder() {
       if (student) {
         setStudentData(sd);
       }
-    } catch (err) {
-      toast.error('Failed to pay feast');
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || 'Failed to pay feast');
     } finally {
       setFeastLoading(false);
     }

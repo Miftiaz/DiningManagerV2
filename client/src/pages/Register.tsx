@@ -54,7 +54,7 @@ export default function Register() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 px-4 py-8">
+    <div className="flex min-h-screen items-center justify-center bg-black px-4 py-8">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-2 text-center px-4 sm:px-6">
           <CardTitle className="text-2xl sm:text-3xl font-bold">Create Account</CardTitle>

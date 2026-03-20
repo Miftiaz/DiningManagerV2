@@ -57,20 +57,32 @@ function getMonthsInRange(start: Date, end: Date) {
 export default function DiningCalendar({monthData, ...dayProps}: DiningCalendarProps){
     
     const [clickedDates, setClickedDates] = useState<DateRange>();
+    const [selectedMultipleDates, setSelectedMultipleDates] = useState<Date[]>([]);
     const [paidAmount, setPaidAmount] = useState<number>(0);
     const [refundedAmount, setRefundedAmount] = useState<number>(0);
+
+    // Determine if we're in multiple selection mode
+    const isMultipleMode = dayProps.mode === "admin" && (dayProps.breakMode === true || dayProps.breakMode === false);
 
     // Reset calendar selection when mode changes
     useEffect(() => {
         setClickedDates(undefined);
+        setSelectedMultipleDates([]);
         setPaidAmount(0);
         setRefundedAmount(0);
-    }, [dayProps.mode === "student" ? (dayProps as any).token : dayProps.selectable]);
+    }, [dayProps.mode === "student" ? (dayProps as any).token : dayProps.selectable, dayProps.mode === "admin" ? dayProps.breakMode : null]);
 
-    const selectedDatesInRange = getDatesInRange(clickedDates || {});
+    const selectedDatesInRange = isMultipleMode 
+        ? selectedMultipleDates.map(d => {
+            const year = d.getFullYear()
+            const month = String(d.getMonth() + 1).padStart(2, '0')
+            const day = String(d.getDate()).padStart(2, '0')
+            return `${year}-${month}-${day}`
+        })
+        : getDatesInRange(clickedDates || {});
     const payableAmount = selectedDatesInRange.length * 2 * 40;
     const minReturnDays = 3;
-    const remainingReturns = dayProps.mode === "student" ? (dayProps.studentData?.selectedDays?.length || 0) : 0;
+    const remainingReturns = dayProps.mode === "student" ? (10 - (dayProps.studentData?.returnedDays?.length || 0)) : 0;
 
     function getDatesInRange(range: DateRange) {
             const dates: string[] = []
@@ -91,31 +103,65 @@ export default function DiningCalendar({monthData, ...dayProps}: DiningCalendarP
             return dates
         }
 
-        const handleBuy = () => {
-            if (!clickedDates?.from || !clickedDates?.to) return
-
-            const dates = getDatesInRange(clickedDates)
-
-            dayProps.setSelectedDates(prev => {
-                const newSet = new Set(prev)
-                dates.forEach(d => newSet.add(d))
-                console.log(newSet)
-                return newSet
-            })
-
-            if (dayProps.onAdjust) {
-                    dayProps.onAdjust(dates);
-            }
-
-            setClickedDates(undefined)
+        const handleSelectMultiple = (dates: Date[] | undefined) => {
+            setSelectedMultipleDates(dates || [])
         }
 
-        const handleSelect = (range: DateRange | undefined) => {
-            setClickedDates(range)
+        const handleBuy = () => {
+            if (isMultipleMode) {
+                if (selectedMultipleDates.length === 0) return
+                const dates = selectedMultipleDates.map(d => {
+                    const year = d.getFullYear()
+                    const month = String(d.getMonth() + 1).padStart(2, '0')
+                    const day = String(d.getDate()).padStart(2, '0')
+                    return `${year}-${month}-${day}`
+                })
+
+                dayProps.setSelectedDates(prev => {
+                    const newSet = new Set(prev)
+                    dates.forEach(d => newSet.add(d))
+                    return newSet
+                })
+
+                if (dayProps.onAdjust) {
+                    dayProps.onAdjust(dates);
+                }
+
+                setSelectedMultipleDates([])
+            } else {
+                if (!clickedDates?.from || !clickedDates?.to) return
+
+                const dates = getDatesInRange(clickedDates)
+
+                dayProps.setSelectedDates(prev => {
+                    const newSet = new Set(prev)
+                    dates.forEach(d => newSet.add(d))
+                    console.log(newSet)
+                    return newSet
+                })
+
+                if (dayProps.onAdjust) {
+                        dayProps.onAdjust(dates);
+                }
+
+                setClickedDates(undefined)
+            }
+        }
+
+        const handleSelect = (range: DateRange | Date[] | undefined) => {
+            if (isMultipleMode) {
+                handleSelectMultiple(range as Date[])
+            } else {
+                setClickedDates(range as DateRange | undefined)
+            }
         }
 
         const handleCancel = () => {
-            setClickedDates(undefined)
+            if (isMultipleMode) {
+                setSelectedMultipleDates([])
+            } else {
+                setClickedDates(undefined)
+            }
         }
 
         const handleAddBreakMode = () => {
@@ -131,9 +177,20 @@ export default function DiningCalendar({monthData, ...dayProps}: DiningCalendarP
         }
 
         const handleConfirmAddBreak = async () => {
-            if (!clickedDates?.from || !clickedDates?.to) return
+            let dates: string[] = []
 
-            const dates = getDatesInRange(clickedDates)
+            if (isMultipleMode) {
+                if (selectedMultipleDates.length === 0) return
+                dates = selectedMultipleDates.map(d => {
+                    const year = d.getFullYear()
+                    const month = String(d.getMonth() + 1).padStart(2, '0')
+                    const day = String(d.getDate()).padStart(2, '0')
+                    return `${year}-${month}-${day}`
+                })
+            } else {
+                if (!clickedDates?.from || !clickedDates?.to) return
+                dates = getDatesInRange(clickedDates)
+            }
 
             dayProps.setSelectedDates(prev => {
                 const newSet = new Set(prev)
@@ -141,7 +198,11 @@ export default function DiningCalendar({monthData, ...dayProps}: DiningCalendarP
                 return newSet
             })
 
-            setClickedDates(undefined)
+            if (isMultipleMode) {
+                setSelectedMultipleDates([])
+            } else {
+                setClickedDates(undefined)
+            }
 
             // Pass dates directly to parent instead of relying on state sync
             if (dayProps.onConfirmAddBreak) {
@@ -150,9 +211,20 @@ export default function DiningCalendar({monthData, ...dayProps}: DiningCalendarP
         }
 
         const handleConfirmRemoveBreak = async () => {
-            if (!clickedDates?.from || !clickedDates?.to) return
+            let dates: string[] = []
 
-            const dates = getDatesInRange(clickedDates)
+            if (isMultipleMode) {
+                if (selectedMultipleDates.length === 0) return
+                dates = selectedMultipleDates.map(d => {
+                    const year = d.getFullYear()
+                    const month = String(d.getMonth() + 1).padStart(2, '0')
+                    const day = String(d.getDate()).padStart(2, '0')
+                    return `${year}-${month}-${day}`
+                })
+            } else {
+                if (!clickedDates?.from || !clickedDates?.to) return
+                dates = getDatesInRange(clickedDates)
+            }
 
             dayProps.setSelectedDates(prev => {
                 const newSet = new Set(prev)
@@ -160,7 +232,11 @@ export default function DiningCalendar({monthData, ...dayProps}: DiningCalendarP
                 return newSet
             })
 
-            setClickedDates(undefined)
+            if (isMultipleMode) {
+                setSelectedMultipleDates([])
+            } else {
+                setClickedDates(undefined)
+            }
 
             // Pass dates directly to parent instead of relying on state sync
             if (dayProps.onConfirmRemoveBreak) {
@@ -169,9 +245,22 @@ export default function DiningCalendar({monthData, ...dayProps}: DiningCalendarP
         }
 
         const handleReturnToken = () => {
-            if (!clickedDates?.from || !clickedDates?.to || selectedDatesInRange.length < minReturnDays) return
+            if (selectedDatesInRange.length < minReturnDays) return
             
-            const dates = getDatesInRange(clickedDates)
+            let dates: string[] = []
+
+            if (isMultipleMode) {
+                if (selectedMultipleDates.length === 0) return
+                dates = selectedMultipleDates.map(d => {
+                    const year = d.getFullYear()
+                    const month = String(d.getMonth() + 1).padStart(2, '0')
+                    const day = String(d.getDate()).padStart(2, '0')
+                    return `${year}-${month}-${day}`
+                })
+            } else {
+                if (!clickedDates?.from || !clickedDates?.to) return
+                dates = getDatesInRange(clickedDates)
+            }
             
             dayProps.setSelectedDates(prev => {
                 const newSet = new Set(prev)
@@ -183,7 +272,11 @@ export default function DiningCalendar({monthData, ...dayProps}: DiningCalendarP
                 dayProps.onReturnToken(dates);
             }
             
-            setClickedDates(undefined)
+            if (isMultipleMode) {
+                setSelectedMultipleDates([])
+            } else {
+                setClickedDates(undefined)
+            }
             setRefundedAmount(0)
         }
 
@@ -277,12 +370,12 @@ export default function DiningCalendar({monthData, ...dayProps}: DiningCalendarP
             <CardContent className="p-2">
                 <Calendar
                 month={months[0]}
-                mode="range"
-                min={2}
+                mode={isMultipleMode ? "multiple" : "range"}
+                min={isMultipleMode ? 1 : 2}
                 numberOfMonths={months.length}
                 showOutsideDays={false}
                 hideNavigation
-                selected={clickedDates}
+                selected={isMultipleMode ? selectedMultipleDates : clickedDates}
                 onSelect={handleSelect}
                 disabled={disabledMatchers}
                 modifiers={{
@@ -460,7 +553,7 @@ export default function DiningCalendar({monthData, ...dayProps}: DiningCalendarP
                         </Button>}
                         <Button
                         onClick={dayProps.token? handleBuy : handleReturnToken}
-                        disabled={!clickedDates?.from || !clickedDates?.to}
+                        disabled={selectedDatesInRange.length === 0}
                         >
                         {dayProps.token ? "Buy" : "Return"}
                         </Button>
