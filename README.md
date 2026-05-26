@@ -4,7 +4,8 @@
 <img width="1886" height="862" alt="image" src="https://github.com/user-attachments/assets/e12a3833-cb18-4068-b971-bcbb78736860" />
 <img width="1888" height="860" alt="image" src="https://github.com/user-attachments/assets/0d447081-c05a-4fc9-887b-c4e5f8cd49b0" />
 <img width="1912" height="442" alt="image" src="https://github.com/user-attachments/assets/18eab877-2f5f-4e44-be39-cfb796b7a097" />
-# 🍽️ Dining Manager V2
+
+## 🍽️ Dining Manager 
 
 A full-stack web application for managing student dining plans. Managers can control dining months, handle feast tokens, track transactions, manage break days, and adjust individual student dining schedules — all through a clean, responsive interface.
 
@@ -154,6 +155,7 @@ All protected routes require a `Bearer <token>` header.
 
 ## 🗃️ Data Models
 <img width="696" height="612" alt="image" src="https://github.com/user-attachments/assets/04e76b8e-0f6d-4867-a2a3-3a9ca49a2095" />
+
 ### Manager
 ```
 { name, email (unique), password (hashed), phone, createdAt }
